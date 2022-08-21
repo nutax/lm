@@ -38,7 +38,7 @@ def lm(xx, y, err = 0.20, alpha = 0.01, test_p = 0.3, seed = 2001):
         train_p = int(m*(1-test_p))
         indices = np.random.permutation(m)
         test_i, train_i = indices[:train_p], indices[train_p:]
-        _train_xx, _test_xx = np.array(list(map(lambda x: x[train_i,:], _xx))), np.array(list(map(lambda x: x[test_id,:], _xx)))
+        _train_xx, _test_xx = _xx[train_i,:], _xx[test_i,:]
         _train_y, _test_y = _y[train_i,:], _y[test_i,:]
         return _train_xx, _train_y, _test_y, _test_xx
     
@@ -48,7 +48,7 @@ def lm(xx, y, err = 0.20, alpha = 0.01, test_p = 0.3, seed = 2001):
 
     # Difference function
     def difference(_xx, _y, _w):
-        return _y - np.matmul(_xx,_w)
+        return (_y.T - np.matmul(_xx,_w))[0]
     
     # Loss function
     def average_error(_dif):
@@ -61,7 +61,7 @@ def lm(xx, y, err = 0.20, alpha = 0.01, test_p = 0.3, seed = 2001):
     # Train
     def train(_xx, _y, _err, _alpha, _seed):
         np.random.seed(_seed)
-        w = np.random.rand((1, _xx.shape[1]))
+        w = np.random.rand(_xx.shape[1])
         loss = []
         epochs = []
 
@@ -76,7 +76,7 @@ def lm(xx, y, err = 0.20, alpha = 0.01, test_p = 0.3, seed = 2001):
             epochs.append(w)
 
             dw = np.apply_along_axis(lambda x: delta(dif, x), 0, _xx)
-            w = w - dw
+            w = w - _alpha*dw
 
         return w, loss, epochs
     
