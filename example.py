@@ -6,4 +6,4 @@ dataset = pd.read_csv('sample.csv')
 xx = (dataset[['Year', "Population"]]).to_numpy()
 y = (dataset[['Employed']]).to_numpy()
 
-lm(xx, y)
+print(lm(xx, y))
