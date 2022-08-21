@@ -1,6 +1,9 @@
+# Imports
 import numpy as np
 from pipe import select
 
+
+# lm: find best linear predictor, get training evolution and test results
 def lm(xx, y, err = 0.20, alpha = 0.01, test_p = 0.3, seed = 2001):
 
     # Create normalization parameters
@@ -68,7 +71,7 @@ def lm(xx, y, err = 0.20, alpha = 0.01, test_p = 0.3, seed = 2001):
         while True:
             dif = difference(_xx, _y, w)
             avg_err = average_error(dif)
-            
+
             if avg_err <= _err:
                 break
 
@@ -89,7 +92,7 @@ def lm(xx, y, err = 0.20, alpha = 0.01, test_p = 0.3, seed = 2001):
     def test(_xx, _y, _w):
         return average_error(difference(_xx, _y, _w))
     
-    test_errors = test(test_xx, test_y, w)
+    test_error = test(test_xx, test_y, w)
 
 
 
@@ -100,4 +103,4 @@ def lm(xx, y, err = 0.20, alpha = 0.01, test_p = 0.3, seed = 2001):
         _ny = np.matmul(_nxx, w)
         return _ny*(ymax - ymin) + ymin
 
-    return predict, train_evolution, test_errors
+    return predict, train_evolution, test_error
